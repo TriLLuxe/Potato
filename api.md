@@ -15,6 +15,7 @@ Body:
 }
 ```
 Response:
+
 При http status 200
 ```
 {
@@ -57,7 +58,7 @@ Response:
 ### Cоздание пользователя
 POST /api/users  
 
-#### Body:
+ Body:
 ```
 {
   "lastName": "string",
@@ -137,7 +138,6 @@ GET /api/wallets/{userId}
 Response:
 ```
 {
-  "userId": "integer",
   "balance": "integer"
 }
 ```
@@ -150,14 +150,27 @@ Body:
 ```
 {
   "amount": "integer",
-  "senderId": "integer",
   "recipientId": "integer",
   "comment": "string",
   "date": "string"
 }
 ```
-- comment - комментарий не более 250 символов, строка произвольная. Дата выставления счёта в ISO 8601 формате.
+- comment - комментарий не более 250 символов, строка произвольная. 
+- amount - Сумма счета.
+- senderId - Идентификатор отправителя.
+- recipientId - Идентификатор получателя.
+- date - Дата выставления счета (формат ISO 8601).
 
+Response:
+```
+{
+  "billId": "string",
+  "amount": "integer",
+  "senderId": "integer",
+  "recipientId": "integer",
+  "comment": "string",
+}
+```
 ### Отмена счета на оплату
 DELETE/api/bills/{UUID}
 >UUID: Идентификатор счета на оплату.
@@ -202,28 +215,28 @@ GET /api/bills/sent/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
- {
+[{
     "billId": "string",
     "amount": "integer",
     "recipientId": "integer",
     "comment": "string",
     "status": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 ### Получение всех счетов к оплате
 GET /api/bills/received/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
-{
+[{
     "billId": "string",
     "amount": "integer",
     "senderId": "integer",
     "comment": "string",
     "status": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 ## Денежные переводы
 ### Создание денежного перевода
