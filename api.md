@@ -20,11 +20,19 @@ Response:
 {
   "token": "string",
   "userId": "integer",
-  "createdAt": "string",
   "expiresAt": "string"
 }
 ```
-При некорректных параметрах вернется `http status 400`
+При http status 400:
+```
+"code"=1,
+"text": "Некоректные данные номера телефона",
+"code"=2,
+"text": "Некорректный пароль"
+```
+1-проблемы с телефоном
+
+2-проблемы с паролем 
 ### Получение информации о сессии
 GET /api/sessions/{token}
 >token (string): Токен сессии.
