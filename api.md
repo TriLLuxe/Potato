@@ -93,9 +93,7 @@ POST /api/users
   "middleName": "string",
   "phoneNumber": "string",
   "email": "string",
-  "birthDate": "string",
-  "createdAt": "string",
-  "updatedAt": "string"
+  "birthDate": "string"
 }
 ```
 ### Получение информации о пользователе
@@ -155,14 +153,13 @@ Body:
   "senderId": "integer",
   "recipientId": "integer",
   "comment": "string",
-  "status": "string",
   "date": "string"
 }
 ```
 - comment - комментарий не более 250 символов, строка произвольная. Дата выставления счёта в ISO 8601 формате.
 
 ### Отмена счета на оплату
-PUT /api/bills/{UUID}/cancel
+DELETE/api/bills/{UUID}
 >UUID: Идентификатор счета на оплату.
 
 Response:
@@ -190,7 +187,7 @@ GET /api/bills/{UUID}
 Response:
 ```
 {
-  "invoiceId": "string",
+  "billId": "string",
   "amount": "integer",
   "senderId": "integer",
   "recipientId": "integer",
@@ -201,12 +198,12 @@ Response:
 ```
 
 ### Получение всех выставленных счетов
-GET /api/invoices/sent/{userId}
+GET /api/bills/sent/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
  {
-    "invoiceId": "string",
+    "billId": "string",
     "amount": "integer",
     "recipientId": "integer",
     "comment": "string",
@@ -215,12 +212,12 @@ Response:
   }
 ```
 ### Получение всех счетов к оплате
-GET /api/invoices/received/{userId}
+GET /api/bills/received/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
 {
-    "invoiceId": "string",
+    "billId": "string",
     "amount": "integer",
     "senderId": "integer",
     "comment": "string",
