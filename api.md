@@ -281,23 +281,23 @@ Response:
 }
 ```
 ### Получение истории переводов
-GET /api/transactions/history/{userId}
+GET /api/transactions/history
 >userId (integer): Идентификатор пользователя.
 
-Filters:
-- type (string): Тип перевода (входящий или исходящий).
-- status (string): Статус перевода (оплачен или не оплачен).
-- recipientId (integer): Идентификатор получателя
+Query-params:
+- type: Тип перевода (входящий или исходящий).
+- status: Статус перевода (оплачен или не оплачен).
+- recipientId: Идентификатор получателя
 
 Response:
 ```
-  {
+  [{
     "transactionId": "string",
     "amount": "integer",
     "senderId": "integer",
     "recipientId": "integer",
     "type": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 
