@@ -15,16 +15,25 @@ Body:
 }
 ```
 Response:
+
 При http status 200
 ```
 {
   "token": "string",
   "userId": "integer",
-  "createdAt": "string",
   "expiresAt": "string"
 }
 ```
-При некорректных параметрах вернется `http status 400`
+При http status 400:
+```
+"code"=1,
+"text": "Некоректные данные номера телефона",
+"code"=2,
+"text": "Некорректный пароль"
+```
+1-проблемы с телефоном
+
+2-проблемы с паролем 
 ### Получение информации о сессии
 GET /api/sessions/{token}
 >token (string): Токен сессии.
@@ -49,7 +58,7 @@ Response:
 ### Cоздание пользователя
 POST /api/users  
 
-#### Body:
+ Body:
 ```
 {
   "lastName": "string",
@@ -85,9 +94,7 @@ POST /api/users
   "middleName": "string",
   "phoneNumber": "string",
   "email": "string",
-  "birthDate": "string",
-  "createdAt": "string",
-  "updatedAt": "string"
+  "birthDate": "string"
 }
 ```
 ### Получение информации о пользователе
@@ -131,7 +138,6 @@ GET /api/wallets/{userId}
 Response:
 ```
 {
-  "userId": "integer",
   "balance": "integer"
 }
 ```
@@ -144,17 +150,29 @@ Body:
 ```
 {
   "amount": "integer",
-  "senderId": "integer",
   "recipientId": "integer",
   "comment": "string",
-  "status": "string",
   "date": "string"
 }
 ```
-- comment - комментарий не более 250 символов, строка произвольная. Дата выставления счёта в ISO 8601 формате.
+- comment - комментарий не более 250 символов, строка произвольная. 
+- amount - Сумма счета.
+- senderId - Идентификатор отправителя.
+- recipientId - Идентификатор получателя.
+- date - Дата выставления счета (формат ISO 8601).
 
+Response:
+```
+{
+  "billId": "string",
+  "amount": "integer",
+  "senderId": "integer",
+  "recipientId": "integer",
+  "comment": "string",
+}
+```
 ### Отмена счета на оплату
-PUT /api/bills/{UUID}/cancel
+DELETE/api/bills/{UUID}
 >UUID: Идентификатор счета на оплату.
 
 Response:
@@ -182,7 +200,7 @@ GET /api/bills/{UUID}
 Response:
 ```
 {
-  "invoiceId": "string",
+  "billId": "string",
   "amount": "integer",
   "senderId": "integer",
   "recipientId": "integer",
@@ -193,32 +211,32 @@ Response:
 ```
 
 ### Получение всех выставленных счетов
-GET /api/invoices/sent/{userId}
+GET /api/bills/sent/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
- {
-    "invoiceId": "string",
+[{
+    "billId": "string",
     "amount": "integer",
     "recipientId": "integer",
     "comment": "string",
     "status": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 ### Получение всех счетов к оплате
-GET /api/invoices/received/{userId}
+GET /api/bills/received/{userId}
 >userId (integer): Идентификатор пользователя.
 Response:
 ```
-{
-    "invoiceId": "string",
+[{
+    "billId": "string",
     "amount": "integer",
     "senderId": "integer",
     "comment": "string",
     "status": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 ## Денежные переводы
 ### Создание денежного перевода
@@ -263,23 +281,23 @@ Response:
 }
 ```
 ### Получение истории переводов
-GET /api/transactions/history/{userId}
+GET /api/transactions/history
 >userId (integer): Идентификатор пользователя.
 
-Filters:
-- type (string): Тип перевода (входящий или исходящий).
-- status (string): Статус перевода (оплачен или не оплачен).
-- recipientId (integer): Идентификатор получателя
+Query-params:
+- type: Тип перевода (входящий или исходящий).
+- status: Статус перевода (оплачен или не оплачен).
+- recipientId: Идентификатор получателя
 
 Response:
 ```
-  {
+  [{
     "transactionId": "string",
     "amount": "integer",
     "senderId": "integer",
     "recipientId": "integer",
     "type": "string",
     "createdAt": "string"
-  }
+  }]
 ```
 
